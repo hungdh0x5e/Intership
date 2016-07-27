@@ -85,9 +85,20 @@ uptream website{
 ```
 Giới hạn kết nối tối đa tới backend server là 200 kết nối. `queue` số kết nối tối đa được giữ lại khi backend đã đạt 200 kết nối. `timeout` thời gian làm mới các request trong hàng đợi. [2]
 
+**Tổng kết**
+
+- Limit accepted verbs by checking the $request_method variable.
+- Thiết lập giá trị nhỏ nhất có thể các tham số: `client_max_body_size`, `client_body_buffer_size`, `client_header_buffer_size`, `large_client_header_buffers`, và tăng khi cần thiết.
+- Set `client_body_timeout`, `client_header_timeout` với giá trị nhỏ nhất có thể.
+- Xem xét sử dụng `HttpLimitReqModule` và `HttpLimitZoneModule` để hạn chế số lượng yêu cầu hoặc số lượng kết nối đồng thời cho một phiên nhất định.
+
+- Cấu hình `worker_processes` và `worker_connections` dựa trên số lượng CPU/ core,  content and load. Số lượng client tối đã được tính: `max_clients = worker_processes * worker_connections`. [3]
+
 
 ### Tham khảo
 
-[1]. https://blog.qualys.com/tag/slow-http-attack
+[1]. https://blog.qualys.com/securitylabs/2012/01/05/slow-read
 
 [2]. https://www.nginx.com/blog/mitigating-ddos-attacks-with-nginx-and-nginx-plus/
+
+[3]. https://blog.qualys.com/securitylabs/2011/11/02/how-to-protect-against-slow-http-attacks
