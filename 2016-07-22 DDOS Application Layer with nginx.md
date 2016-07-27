@@ -85,6 +85,33 @@ uptream website{
 ```
 Giới hạn kết nối tối đa tới backend server là 200 kết nối. `queue` số kết nối tối đa được giữ lại khi backend đã đạt 200 kết nối. `timeout` thời gian làm mới các request trong hàng đợi. [2]
 
+**Filter Request**
+
+Ta có thể sử dụng `nginx` để lọc, ngăn chặn một số request theo tiêu chí khác nhau:
+
+- Các request tới một URL cụ thể
+- Các request có User-Agent không bình thường
+- Các request trong đó `Referer Header` có giá trị có thể kết hợp với một cuộc tấn công.
+- Các request trong đó `header` có giá trị có thể liên kết với một cuộc tấn công.
+
+```
+// Filter with URL
+location /foo.php {
+    deny all;
+}
+```
+
+```
+// Filter with User-Agent
+location / {
+    if ($http_user_agent ~* foo|bar) {
+        return 403;
+    }
+    ...
+}
+```
+
+
 **Tổng kết**
 
 - Giới hạn chấp nhận các request method thông qua biến `$request_method`
@@ -100,4 +127,4 @@ Giới hạn kết nối tối đa tới backend server là 200 kết nối. `qu
 
 [2]. https://www.nginx.com/blog/mitigating-ddos-attacks-with-nginx-and-nginx-plus/
 
-[3]. https://blog.qualys.com/securitylabs/2011/11/02/how-to-protect-against-slow-http-attacks
+[3]. https://blog.qualys.com/securitylabs/2011/11/02/how-to-protect-against-slow-http-attacks 
