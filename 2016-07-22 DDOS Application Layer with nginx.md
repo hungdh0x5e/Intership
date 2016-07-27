@@ -1,12 +1,12 @@
-## DDOS Application Layer
+# DDOS Application Layer
 
-### HTTP Flood
+## HTTP Flood
 
-#### Nguyên tắc hoạt động
+### Nguyên tắc hoạt động
 
 Gửi các yêu cầu HTTP thành dạng các bản nhỏ, và truyền với tốc độ chậm tới web server hoặc đọc dữ liệu một cách nhỏ giọt => Server sẽ luôn chờ để nhận dữ liệu HTTP đầy đủ
 
-#### Các hình thức tấn công
+### Các hình thức tấn công
 
 - HTTP Slow header (slowloris)
 - HTTP Slow body
@@ -28,7 +28,7 @@ Cách phát hiện: attack tìm kiếm các nguồn tài nguyên tạo ra bởi 
 
 Khi server gửi response, attack nhận gói tin đầu tiên, và thông báo lại kích thước của sổ TCP nhỏ nhất có thể (Server dựa vào đây để gửi gói tin tiếp theo)
 
-#### Cách phòng chống
+### Cách phòng chống
 
 Đối với tấn công `slow header` và `slow body`, trên nginx ta thiết lập lại 2 thông số để giới hạn thời gian sống của `header` cũng như `body`
 
@@ -45,10 +45,9 @@ Song song đó, nginx có cơ chế buffering data từ HTTP header của client
 Đối với `slow read`:
 
 - Không chấp nhận các kết nối với giá trị windown size nhỏ bất thường
-- Hạn chế tuyệt đối kết nối với thời gian hợp lý
 - Không cho phép kết nối liên tục (persistent connections) trừ khi hưởng lợi từ nó.[1]
 
-### Một số cách phòng tránh khác
+## Một số cách phòng tránh khác
 
 **Giới hạn số lượng request**
 
@@ -84,10 +83,11 @@ uptream website{
 	queue 10 timeout 30s;
 }
 ```
-Giới hạn kết nối tối đa tới backend server là 200 kết nối. `queue`: số kết nối tối đa được giữ lại khi backend đã đạt 200 kết nối. `timeout` thời gian làm mới các request trong hàng đợi. [2]
+Giới hạn kết nối tối đa tới backend server là 200 kết nối. `queue` số kết nối tối đa được giữ lại khi backend đã đạt 200 kết nối. `timeout` thời gian làm mới các request trong hàng đợi. [2]
 
 
 ### Tham khảo
 
 [1]. https://blog.qualys.com/tag/slow-http-attack
+
 [2]. https://www.nginx.com/blog/mitigating-ddos-attacks-with-nginx-and-nginx-plus/
